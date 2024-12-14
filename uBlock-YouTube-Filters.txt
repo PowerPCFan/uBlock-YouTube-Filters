@@ -1,0 +1,34 @@
+! uBlock Origin YouTube Filters
+! Copyright 2024 PowerPCFan
+! IMPORTANT: make sure "Allow custom filters requiring trust" is enabled!
+
+
+
+! FIXES FOR NEW YOUTUBE UPDATE:
+! remove pink fade from youtube playback progress bar
+youtube.com##.ytp-cairo-refresh-signature-moments .ytp-play-progress:style(background: #FF0000 !important;)
+youtube.com##ytd-thumbnail-overlay-resume-playback-renderer[enable-refresh-signature-moments-web] #progress.ytd-thumbnail-overlay-resume-playback-renderer:style(background: #FF0000 !important;)
+
+! change color of youtube notification badge to old red color
+www.youtube.com##.yt-spec-icon-badge-shape__badge:style(background: #FF0000 !important;)
+
+! change color of youtube logo to old red color
+youtube.com###logo-icon > .yt-spec-icon-shape.yt-icon.style-scope.yt-icon-shape > div > svg > g:first-of-type > path:first-of-type:style(fill: #FF0000 !important;)
+
+! Remove "Custom" label from video speed indicator in YouTube settings flyout
+www.youtube.com##+js(trusted-replace-outbound-text, String.prototype.replace, /Custom \((.+?)\)/, ' $1', condition, /Custom \(.+?\)/)
+
+
+
+! fix ad blocking and slow loading times
+www.youtube.com##+js(nano-stb, resolve(1), *, 0.001)
+www.youtube.com##+js(set, yt.config_.EXPERIMENT_FLAGS.web_enable_ab_rsp_cl, false)
+www.youtube.com##+js(set, yt.config_.EXPERIMENT_FLAGS.ab_pl_man, false)
+||googlevideo.com/videoplayback$xhr,3p,method=get,domain=www.youtube.com
+
+! Fix possible thumbnail misalignment
+www.youtube.com##ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column]:style(margin-left: calc(var(--ytd-rich-grid-item-margin)/2) !important;)
+www.youtube.com##[is-in-first-column]:remove-attr(is-in-first-column)
+
+! This might not work anymore - removes everything except for channels and videos from YouTube search results
+youtube.com##ytd-search ytd-item-section-renderer>#contents>:not(ytd-video-renderer,ytd-channel-renderer),ytd-secondary-search-container-renderer
